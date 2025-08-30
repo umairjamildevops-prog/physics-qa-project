@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Physics QnA</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 2rem;
+    }
+    h2 {
+      color: #222;
+      text-align: center;
+    }
+    #container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 650px;
+      margin: auto;
+    }
+    input {
+      width: 75%;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #answer {
+      margin-top: 2rem;
+      padding: 1rem;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      display: none;
+    }
+    .formula {
+      background: #e8f9f1;
+      border-left: 6px solid #28a745;
+      color: #155724;
+      font-weight: bold;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .theory {
+      background: #e9f1fb;
+      border-left: 6px solid #007bff;
+      color: #0c3c78;
+    }
+    .error {
+      background: #f8d7da;
+      border-left: 6px solid #dc3545;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>⚡ Physics QnA System</h2>
+    <input id="q" placeholder="Ask your question (e.g., 'What is the formula of velocity?')" />
+    <button onclick="ask()">Ask</button>
+    <div id="answer"></div>
+  </div>
+
+  <script>
+    async function ask() {
+      const question = document.getElementById('q').value;
+      const out = document.getElementById('answer');
+      out.style.display = "block";
+      out.className = "";
+      out.innerHTML = "⏳ Searching...";
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: question, top_k: 3 })
+        });
+        const data = await res.json();
+
+        if (data.type === "formula") {
+          out.className = "formula";
+          out.innerHTML = `<b>Formula:</b> ${data.answer}`;
+        } else if (data.type === "theory") {
+          out.className = "theory";
+          out.innerHTML = `<b>Theory:</b> ${data.answer}`;
+        } else {
+          out.className = "error";
+          out.innerHTML = "⚠️ Unexpected response.";
+        }
+      } catch (err) {
+        out.className = "error";
+        out.innerHTML = "❌ Error: Could not fetch answer.";
+      }
+    }
+  </script>
+</body>
+</html>

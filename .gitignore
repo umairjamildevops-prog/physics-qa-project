@@ -1,0 +1,37 @@
+📄 Final .gitignore
+# -----------------------------
+# Python cache / build files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# -----------------------------
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# -----------------------------
+# Editor / IDE configs
+.vscode/
+.idea/
+*.swp
+
+# -----------------------------
+# Local Databases & Logs
+.chromadb/
+*.db
+*.sqlite
+*.log
+
+# -----------------------------
+# OS files
+.DS_Store
+Thumbs.db
