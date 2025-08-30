@@ -1,9 +1,7 @@
 fastapi
-uvicorn[standard]
+uvicorn
 pdfplumber
-sentence-transformers
 chromadb
-numpy
-tqdm
-python-multipart
-pydantic
+sentence-transformers
+
+
